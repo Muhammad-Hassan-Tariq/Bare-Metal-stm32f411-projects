@@ -3,7 +3,8 @@
  * @author  [Muhammad Hassan Tariq/ https://github.com/Muhammad-Hassan-Tariq]
  * @brief   Bare-metal implementation of EXTI0
  * @details Implemented binary count LED Pattern made of 05 LEDs/ GPIO-Output
- which increments count via input from Push Button on PIN B0 on falling trigger
+            which increments count via input from Push Button on PIN B0 on
+            falling trigger
             // Tabular Form
             PIN A0-A4      Output
             PIN B0         Input
