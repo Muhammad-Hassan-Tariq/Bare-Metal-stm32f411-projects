@@ -38,8 +38,8 @@ Each project directory consists of:
 - `main.cpp`  
   Main project source code
 
-- `schematic.png`  [It may or may not be present based on project itself]
-  Schematic diagram to show wiring & overall working
+- `schematic.png`  [It may or may not be present based on project itself]  
+  Schematic diagram to show wiring & overall working 
 
 - `demo.mp4`  
   Short recording showing real hardware behavior
