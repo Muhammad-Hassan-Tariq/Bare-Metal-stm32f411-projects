@@ -60,24 +60,36 @@ All projects use the same base toolchain:
 
 - Compiler: `arm-none-eabi-gcc`
 - Assembler: `arm-none-eabi-as`
-- Linker script: `/toolchain/linker.ld`
-- Startup code: `/toolchain/startup.s`
+- Linker script: `/platform/STM32F411CEU6_FLASH.ld`
+- Startup code: `/platform/startup_stm32f411xe.s`
 
 Flashing via:
 
 - `dfu-util`  
 
-Build system: simple `Makefile` per project or shared include.
+Build system: simple `Makefile` per project
 
 ---
 
-## ▶️ How to Build a Project
+## ▶️ Getting Started
 
-Example:
+- **Install Tools**
+  *-> For **Debian** based OS*
+    `sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi dfu-util git`
+  *-> For **Red Hat** based OS*
+    `sudo dnf install arm-none-eabi-gcc-cs arm-none-eabi-binutils-cs arm-none-eabi-newlib dfu-util git`
+  *-> For **Arch** baed OS*
+    `sudo pacman -S arm-none-eabi-gcc arm-none-eabi-binutils arm-none-eabi-newlib dfu-util git`
+  
+- **Verify Installation**
+    `arm-none-eabi-g++ --version`
+  
+- **Pull this repository to local system**
+    `git pull https://github.com/Muhammad-Hassan-Tariq/Bare-Metal-stm32f411-projects.git`
 
-```bash
-cd dma-gpio
-make
-st-flash write build/main.bin 0x08000000
-
+- **Build & Flash**
+    - Change directory to any project listed
+      `cd ./"01 - Interrupt Based Binary Counter"`
+    - *Build* the project & flash
+      `sudo make dfu`
 
