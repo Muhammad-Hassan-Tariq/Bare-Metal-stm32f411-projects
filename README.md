@@ -1,4 +1,7 @@
-
+![STM32](https://img.shields.io/badge/STM32-F411-blue)
+![ARM](https://img.shields.io/badge/ARM-Cortex--M4-orange)
+![Language](https://img.shields.io/badge/Language-C%2B%2B-green)
+![Build](https://img.shields.io/badge/Build-Make-red)
 ![IMG_20260114_140556_768 (1)_1](https://github.com/user-attachments/assets/8243e93a-22cf-4189-a1d8-aa3dd9c43f7c)
 
 ## 📌 STM32 Bare-Metal Learning Labs
