@@ -79,7 +79,7 @@ Build system: simple `Makefile` per project
 
 ## ▶️ Getting Started
 
-- **Install Tools**
+- **Install Tools**  
   *-> For **Debian** based OS*
   - `sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi dfu-util git make`
   
