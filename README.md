@@ -37,10 +37,10 @@ Each project directory consists of:
 
 - `demo.mp4`  
   Short recording showing real hardware behavior
-
-- `Makefile`
+  
+- `Makefile`  
   A make file responsible for compiling, linking and flashing with one command
-
+  
 - `README.md`  
   Explanation of:
   - what the project demonstrates
