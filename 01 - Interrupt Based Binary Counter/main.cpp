@@ -13,7 +13,7 @@
  * @note    Target: STM32F411CEU6 (Black Pill)
  */
 
-#include "../drivers/vendor/stm32f411xe.h"
+#include "../platform/drivers/stm32f411xe.h"
 
 int count = 0; // Variable to store count for Push Button
 
@@ -62,8 +62,8 @@ int main(void) {
   GPIOB->MODER &= ~(3U << (0 * 2)); // Input mode (00)
   GPIOB->PUPDR |= (1U << (0 * 2));  // Pull-up (01)
 
-  RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;       // Enable Clock for SYSCFG
-  SYSCFG->EXTICR[0] &= ~SYSCFG_EXTICR1_EXTI0; // Clear existing bits for Pin B0
+  RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;         // Enable Clock for SYSCFG
+  SYSCFG->EXTICR[0] &= ~SYSCFG_EXTICR1_EXTI0;   // Clear existing bits for Pin B0
   SYSCFG->EXTICR[0] |= SYSCFG_EXTICR1_EXTI0_PB; // Set Port B for Pin B0
 
   EXTI->IMR |= EXTI_IMR_MR0;   // Interrupt Mask for Line 0

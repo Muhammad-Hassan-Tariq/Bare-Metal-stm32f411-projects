@@ -12,7 +12,7 @@
  * @note    Target: STM32F411CEU6 (Black Pill)
  */
 
-#include "../drivers/vendor/stm32f411xe.h"
+#include "../platform/drivers/stm32f411xe.h"
 #include <cstdint>
 
 uint8_t source[50];
