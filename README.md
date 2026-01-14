@@ -86,7 +86,7 @@ Build system: simple `Makefile` per project
   *-> For **Red Hat** based OS*
   - `sudo dnf install arm-none-eabi-gcc-cs arm-none-eabi-binutils-cs arm-none-eabi-newlib dfu-util git make`
   
-  *-> For **Arch** baed OS*
+  *-> For **Arch** based OS*
   - `sudo pacman -S arm-none-eabi-gcc arm-none-eabi-binutils arm-none-eabi-newlib dfu-util git make`
   
 - **Verify Installation**
