@@ -1,3 +1,5 @@
+
+![IMG_20260114_140556_768](https://github.com/user-attachments/assets/b27fea5f-6299-4d89-a60c-30e7972a787e)
 # 📌 STM32 Bare-Metal Learning Labs
 
 This repository contains a collection of **bare-metal STM32F411 experiments**
@@ -75,14 +77,13 @@ Build system: simple `Makefile` per project
 
 - **Install Tools**
   *-> For **Debian** based OS*
-  - `sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi dfu-util git`
+  - `sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi dfu-util git make`
   
-    
   *-> For **Red Hat** based OS*
-  - `sudo dnf install arm-none-eabi-gcc-cs arm-none-eabi-binutils-cs arm-none-eabi-newlib dfu-util git`
+  - `sudo dnf install arm-none-eabi-gcc-cs arm-none-eabi-binutils-cs arm-none-eabi-newlib dfu-util git make`
   
   *-> For **Arch** baed OS*
-  - `sudo pacman -S arm-none-eabi-gcc arm-none-eabi-binutils arm-none-eabi-newlib dfu-util git`
+  - `sudo pacman -S arm-none-eabi-gcc arm-none-eabi-binutils arm-none-eabi-newlib dfu-util git make`
   
 - **Verify Installation**
   - `arm-none-eabi-g++ --version`
@@ -93,7 +94,20 @@ Build system: simple `Makefile` per project
 
 - **Build & Flash**
     - Change directory to any project listed
-      - `cd ./"01 - Interrupt Based Binary Counter"`
-    - *Build* the project & flash
-      - `sudo make dfu`
+
+---
+
+## 💻 My Development Environment
+
+- **OS:** Arch Linux
+- **Editor:** Neovim + clangd LSP
+- **Build:** GNU Make
+- **Debug:** GDB + ST-Link V2
+- **Language:** C++ (with C-style register access)
+
+**Why C++ for embedded?**
+- Type safety without performance overhead
+- constexpr for compile-time optimization
+- Templates for zero-cost abstractions
+- Better than C for large firmware projects
 
