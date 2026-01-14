@@ -1,6 +1,7 @@
 
 #![IMG_20260114_140556_768 (1)_1](https://github.com/user-attachments/assets/8243e93a-22cf-4189-a1d8-aa3dd9c43f7c)
- 📌 STM32 Bare-Metal Learning Labs
+
+## 📌 STM32 Bare-Metal Learning Labs
 
 This repository contains a collection of **bare-metal STM32F411 experiments**
 implemented using **CMSIS** (no HAL or LL drivers). It's my progression of learning Bare
