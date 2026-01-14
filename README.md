@@ -25,6 +25,9 @@ This is not production firmware — it is a **silicon exploration lab**.
 ## 🗂 Projects [Other will be added soon this repo is not complete yet]
 - [01 - Interrupt Based Binary Counter](https://github.com/Muhammad-Hassan-Tariq/Bare-Metal-stm32f411-projects/tree/main/01%20-%20Interrupt%20Based%20Binary%20Counter)
 - [02 - DMA Based Copying Array](https://github.com/Muhammad-Hassan-Tariq/Bare-Metal-stm32f411-projects/tree/main/02%20-%20DMA%20Based%20Copying%20Array)
+
+---
+
 ### 📁 Project Directories
 
 Each project directory consists of:
