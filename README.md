@@ -98,6 +98,7 @@ Build system: simple `Makefile` per project
 
 - **Build & Flash**
     - Change directory to any project listed
+    - `sudo make dfu`  
 
 ---
 
