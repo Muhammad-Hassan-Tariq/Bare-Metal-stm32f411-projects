@@ -43,9 +43,6 @@ Each project directory consists of:
 
 - `schematic.svg`  [It may or may not be present based on project itself]  
   Schematic diagram to show wiring & overall working 
-
-- `demo.mp4`  
-  Short recording showing real hardware behavior
   
 - `Makefile`  
   A make file responsible for compiling, linking and flashing with one command
