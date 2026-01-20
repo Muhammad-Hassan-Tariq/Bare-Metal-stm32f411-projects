@@ -86,6 +86,13 @@ $(BUILD_DIR)/$(HEX): $(BUILD_DIR)/$(TARGET)
 dfu: $(BUILD_DIR)/$(BIN)
 	@echo "Flashing with DFU-UTIL..."
 	dfu-util -a 0 -s 0x08000000:leave -D $(BUILD_DIR)/$(BIN)
+	# Flash with OpenOCD (Black Pill STM32F411)
+
+openocd_flash: $(BUILD_DIR)/$(BIN)
+	@echo "Flashing with OpenOCD..."
+	@openocd -f interface/stlink.cfg \
+	         -f target/stm32f4x.cfg \
+	         -c "program $< verify reset exit 0x08000000"
 
 clean:
 	@rm -rf $(BUILD_DIR)
