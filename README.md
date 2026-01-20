@@ -79,13 +79,13 @@ Build system: simple `Makefile` per project
 
 - **Install Tools**  
   *-> For **Debian** based OS*
-  - `sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi dfu-util git make`
+  - `sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi dfu-util git make openocd`
   
   *-> For **Red Hat** based OS*
-  - `sudo dnf install arm-none-eabi-gcc-cs arm-none-eabi-binutils-cs arm-none-eabi-newlib dfu-util git make`
+  - `sudo dnf install arm-none-eabi-gcc-cs arm-none-eabi-binutils-cs arm-none-eabi-newlib dfu-util git make openocd`
   
   *-> For **Arch** based OS*
-  - `sudo pacman -S arm-none-eabi-gcc arm-none-eabi-binutils arm-none-eabi-newlib dfu-util git make`
+  - `sudo pacman -S arm-none-eabi-gcc arm-none-eabi-binutils arm-none-eabi-newlib dfu-util git make openocd`
   
 - **Verify Installation**
   - `arm-none-eabi-g++ --version`
@@ -96,7 +96,8 @@ Build system: simple `Makefile` per project
 
 - **Build & Flash**
     - Change directory to any project listed
-    - `sudo make dfu`  
+    - `sudo make dfu`
+    - `sudo make openocd_flash`  
 
 ---
 
