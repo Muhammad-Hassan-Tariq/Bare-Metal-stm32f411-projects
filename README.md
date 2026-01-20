@@ -69,7 +69,8 @@ All projects use the same base toolchain:
 
 Flashing via:
 
-- `dfu-util`  
+- `dfu-util`
+- `OpenOCD`  
 
 Build system: simple `Makefile` per project
 
