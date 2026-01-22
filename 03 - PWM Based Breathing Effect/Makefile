@@ -6,7 +6,8 @@ HEX     = $(PROJECT).hex
 
 # Toolchain
 PREFIX  = arm-none-eabi-
-CC      = $(PREFIX)g++
+CC      = $(PREFIX)gcc
+CXX     = $(PREFIX)g++
 OBJCOPY = $(PREFIX)objcopy
 OBJDUMP = $(PREFIX)objdump
 SIZE    = $(PREFIX)size
@@ -16,36 +17,38 @@ MCU       = cortex-m4
 FPU       = fpv4-sp-d16
 FLOAT_ABI = hard
 
-# --- UPDATED DIRECTORIES FOR YOUR NEW STRUCTURE ---
+# --- DIRECTORIES ---
 PLATFORM_DIR = ../platform
 DRIVERS_DIR  = $(PLATFORM_DIR)/drivers
+NO_OS_DIR    = $(PLATFORM_DIR)/no-os_files
 BUILD_DIR    = build
 
-# Files
-# main.cpp is in the current directory
-SRC_FILES    = main.cpp 
-# Shared vendor files from platform
-VENDOR_SRC   = $(DRIVERS_DIR)/system_stm32f4xx.c $(DRIVERS_DIR)/segger_fault_handler.c
+# --- FILES ---
+# Startup and Linker script
 STARTUP_FILE = $(PLATFORM_DIR)/startup_stm32f411xe.s
 LDSCRIPT     = $(PLATFORM_DIR)/STM32F411CEU6_FLASH.ld
 
-# Object files mapping
+# Define Object files
+# We explicitly list them to ensure we pull from the correct directories
 OBJ_FILES = $(BUILD_DIR)/main.o \
             $(BUILD_DIR)/system_stm32f4xx.o \
             $(BUILD_DIR)/segger_fault_handler.o \
+            $(BUILD_DIR)/syscalls.o \
+            $(BUILD_DIR)/sysmem.o \
             $(BUILD_DIR)/startup.o
 
 # Flags
-# -I$(DRIVERS_DIR) is critical so main.cpp finds stm32f411xe.h
+# Note: -specs=nosys.specs is REMOVED because we are linking syscalls.c
 CFLAGS = -mcpu=$(MCU) -mthumb -mfpu=$(FPU) -mfloat-abi=$(FLOAT_ABI) \
          -Og -g3 -Wall -fdata-sections -ffunction-sections \
          -DSTM32F411xE \
-         -I$(DRIVERS_DIR)
+         -I$(DRIVERS_DIR) -I$(NO_OS_DIR)
 
 LDFLAGS = -mcpu=$(MCU) -mthumb -mfpu=$(FPU) -mfloat-abi=$(FLOAT_ABI) \
           -Wl,--gc-sections -T$(LDSCRIPT) \
           -Wl,-Map=$(BUILD_DIR)/$(PROJECT).map \
-          -specs=nano.specs -specs=nosys.specs
+          -specs=nano.specs \
+          -Wl,--no-warn-rwx-segments
 
 # --- Rules ---
 all: $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/$(BIN) $(BUILD_DIR)/$(HEX)
@@ -53,48 +56,60 @@ all: $(BUILD_DIR)/$(TARGET) $(BUILD_DIR)/$(BIN) $(BUILD_DIR)/$(HEX)
 $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)
 
-# Compile local main.cpp
+# 1. Compile C++ Source (main.cpp)
 $(BUILD_DIR)/main.o: main.cpp | $(BUILD_DIR)
-	@echo "Compiling $<..."
+	@echo "Compiling C++ Source: $<"
+	@$(CXX) $(CFLAGS) -c $< -o $@
+
+# 2. Compile System Stubs (C files - using CC to avoid 'new' keyword error)
+$(BUILD_DIR)/syscalls.o: $(NO_OS_DIR)/syscalls.c | $(BUILD_DIR)
+	@echo "Compiling System Stub: $<"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-# Compile Vendor C files from platform
-$(BUILD_DIR)/%.o: $(DRIVERS_DIR)/%.c | $(BUILD_DIR)
-	@echo "Compiling Vendor C file $<..."
+$(BUILD_DIR)/sysmem.o: $(NO_OS_DIR)/sysmem.c | $(BUILD_DIR)
+	@echo "Compiling System Stub: $<"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-# Compile startup assembly from platform
+# 3. Compile Platform Drivers (C files)
+$(BUILD_DIR)/system_stm32f4xx.o: $(DRIVERS_DIR)/system_stm32f4xx.c | $(BUILD_DIR)
+	@echo "Compiling Driver: $<"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/segger_fault_handler.o: $(DRIVERS_DIR)/segger_fault_handler.c | $(BUILD_DIR)
+	@echo "Compiling Driver: $<"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+# 4. Compile Startup Assembly
 $(BUILD_DIR)/startup.o: $(STARTUP_FILE) | $(BUILD_DIR)
-	@echo "Compiling startup file..."
+	@echo "Compiling Startup: $<"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-# Link
+# 5. Link (Use CXX Linker for C++ projects)
 $(BUILD_DIR)/$(TARGET): $(OBJ_FILES)
-	@echo "Linking..."
-	@$(CC) $(OBJ_FILES) $(LDFLAGS) -o $@
+	@echo "Linking: $@"
+	@$(CXX) $(OBJ_FILES) $(LDFLAGS) -o $@
 	@$(SIZE) $@
 
-# Create binary
+# 6. Binary/Hex Generation
 $(BUILD_DIR)/$(BIN): $(BUILD_DIR)/$(TARGET)
 	@$(OBJCOPY) -O binary $< $@
 
-# Create hex
 $(BUILD_DIR)/$(HEX): $(BUILD_DIR)/$(TARGET)
 	@$(OBJCOPY) -O ihex $< $@
 
-# Flash with DFU-UTIL
+# --- Utility Commands ---
+
 dfu: $(BUILD_DIR)/$(BIN)
-	@echo "Flashing with DFU-UTIL..."
+	@echo "Flashing via DFU..."
 	dfu-util -a 0 -s 0x08000000:leave -D $(BUILD_DIR)/$(BIN)
-	# Flash with OpenOCD (Black Pill STM32F411)
 
 openocd_flash: $(BUILD_DIR)/$(BIN)
-	@echo "Flashing with OpenOCD..."
-	@openocd -f interface/stlink.cfg \
-	         -f target/stm32f4x.cfg \
-	         -c "program $< verify reset exit 0x08000000"
+	@echo "Flashing via OpenOCD..."
+	@openocd -f interface/stlink.cfg -f target/stm32f4x.cfg -c "program $< verify reset exit 0x08000000"
+	@echo "✅ Flashing Done Successfully"
 
 clean:
+	@echo "Cleaning build directory..."
 	@rm -rf $(BUILD_DIR)
 
-.PHONY: all clean dfu
+.PHONY: all clean dfu openocd_flash
